@@ -27,11 +27,21 @@ class UserController {
 
     async login(req, res) {
         try {
-            console.log('login method');
-            res.send('logowanie');
+            const user = await User.findOne({ email: req.body.email });
+            if (!user) {
+                throw new Error('user not found');
+            }
+            
+            console.log(`Req body pass: ${req.body.password}`);
+            const isValidPassword = user.comparePassword(req.body.password);
+            if (!isValidPassword) {
+                throw new Error('Password not valid');
+            }
+
+            res.status(200).json({ apiToken: user.apiToken })
         } catch (e) {
             console.log(e);
-            res.send(e);
+            res.status(403);
         }
     }
 }

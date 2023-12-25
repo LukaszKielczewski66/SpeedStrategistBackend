@@ -49,8 +49,8 @@ userSchema.path('password').set(value => {
   })
 
   userSchema.methods = {
-    comparePassword(password) {
-      return bcrypt.compareSync(password, this.password);
+    comparePassword(candidatePassword) {
+      return bcrypt.compareSync(candidatePassword, this.password);
     }
   }
 
