@@ -40,12 +40,13 @@ userSchema.path('password').set(value => {
     next(error);
   });
 
-//   userSchema.pre('save', function(next) {
-//     const user = this;
-//     if (user.isNew) {
-//       user.apiToken = randomString.generate(30);
-//     }
-//   })
+  userSchema.pre('save', function(next) {
+    const user = this;
+    if (user.isNew) {
+      user.apiToken = randomString.generate(30);
+    }
+    next();
+  })
 
   userSchema.methods = {
     comparePassword(password) {

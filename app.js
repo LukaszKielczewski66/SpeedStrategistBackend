@@ -1,8 +1,16 @@
 const express = require('express');
-const path = require('path');
+const session = require('express-session');
+const { sessionKeySecret } = require('./config');
 const app = express();
 
 require('./db/mongoose');
+
+app.use(session({
+    secret: sessionKeySecret,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 2 },
+    resave: false
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

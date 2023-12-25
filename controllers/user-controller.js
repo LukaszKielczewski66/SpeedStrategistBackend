@@ -4,7 +4,14 @@ class UserController {
     async register(req, res) {
         const user = new User({
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            firstName: req.body.firstName,
+            lastName: "",
+            icon: "",
+            car: "",
+            model: "",
+            name: "",
+            apiToken: ""
         })
         console.log(user)
 
