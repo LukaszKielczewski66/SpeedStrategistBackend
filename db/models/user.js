@@ -35,6 +35,7 @@ userSchema.path('password').set(value => {
 
   userSchema.post('save', function(error, doc, next) {
     if (error.code === 11000) {
+      error.status = 409;
       error.errors = { email: { message: 'Email jest już zajęty' }};
     }
     next(error);

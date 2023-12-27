@@ -13,15 +13,21 @@ class UserController {
             name: "",
             apiToken: ""
         })
-        console.log(user)
 
         try {
             const savedb = await user.save();
-            console.log(savedb);
             res.send('zarejestrowano')
         } catch (e) {
             console.log(e);
-            res.send(e);
+            if (e.status === 409) {
+                res.status(409).json({ message: 'Konflikt danych', errors: e.errors });
+            }
+            else if (e.errors.email.message) {
+                res.status(408).json({ message: 'Walidacja email', errors: e.errors.email.message })
+            }
+            else {
+                res.send(e);
+            }
         }
     }
 
