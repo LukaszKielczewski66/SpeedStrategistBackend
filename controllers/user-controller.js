@@ -35,12 +35,13 @@ class UserController {
         try {
             const user = await User.findOne({ email: req.body.email });
             if (!user) {
+                res.status(406).json("User not found");
                 throw new Error('user not found');
             }
             
-            console.log(`Req body pass: ${req.body.password}`);
             const isValidPassword = user.comparePassword(req.body.password);
             if (!isValidPassword) {
+                res.status(405).json("Password not valid");
                 throw new Error('Password not valid');
             }
 
