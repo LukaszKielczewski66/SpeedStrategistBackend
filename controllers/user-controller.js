@@ -51,6 +51,64 @@ class UserController {
             res.status(403);
         }
     }
+
+    async getUserData(req, res) {
+        try {
+            const apiToken = req.header('Authorization').replace('Bearer ', '');
+            const user = await User.findOne({ apiToken });
+            console.log('apiToken: ', req.header('Authorization'));
+
+            if (!user) {
+                res.status(401).json({ error: "Invalid apiToken" });
+            }
+
+            res.status(200).json({
+                firstName: user.firstName,
+                lastName: user.lastName,
+                icon: user.icon,
+                car: user.car,
+                model: user.model,
+                name: user.name
+            })
+
+        } catch (e) {
+            console.log(e);
+            // res.status(500).json({ error: 'Server error' });
+        }
+    }
+
+    async updateUserData(req, res) {
+        const apiToken = req.header('Authorization').replace('Bearer ', '');
+            const user = await User.findOne({ apiToken });
+            console.log('apiToken: ', req.header('Authorization'));
+
+            if (!user) {
+                res.status(401).json({ error: "Invalid apiToken" });
+            }
+
+            try {
+                const updateFields = {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    car: req.body.car,
+                    model: req.body.model,
+                    name: req.body.name,
+                  };
+
+                  const result = await User.updateOne({ apiToken }, { $set: updateFields })
+                  
+                  console.log(`result.modifiedCount: ${result.modifiedCount}`)
+
+                  if (result.modifiedCount === 1) {
+                    res.status(200).json('User updated successfully');
+                  } else {
+                    res.status(200).json({ error: 'No changes made or user not found' });
+                  }
+
+            } catch (e) {
+                console.log(e);
+            }
+    }
 }
 
 module.exports = new UserController();
