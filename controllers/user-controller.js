@@ -100,14 +100,44 @@ class UserController {
                   console.log(`result.modifiedCount: ${result.modifiedCount}`)
 
                   if (result.modifiedCount === 1) {
-                    res.status(200).json('User updated successfully');
+                    res.status(200).json('Zapisano ustawienia');
                   } else {
-                    res.status(200).json({ error: 'No changes made or user not found' });
+                    res.status(200).json('Brak zmian do zapisania!');
                   }
 
             } catch (e) {
                 console.log(e);
             }
+    }
+
+    async changeUserPassword(req, res) {
+       try {
+        const apiToken = req.header('Authorization').replace('Bearer ', '');
+        const user = await User.findOne({ apiToken });
+        console.log('apiToken: ', req.header('Authorization'));
+
+         if (!user) {
+            res.status(401).json({ error: "Invalid apiToken" });
+        }
+        console.log('REQ BODY', req.body.oldPassword)
+        const isValidPassword = user.comparePassword(req.body.oldPassword);
+            
+        if (!isValidPassword) {
+            res.status(405).json("Password not valid");
+            throw new Error('Password not valid');
+        }
+
+        const newPassword = req.body.newPassword;
+        user.password = newPassword;
+
+        const result = await user.save();
+
+        if (result) {
+            res.status(200).json('Password change successfully')
+        }
+       } catch (e) {
+             console.log(e)
+       }
     }
 }
 
