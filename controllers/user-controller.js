@@ -139,6 +139,45 @@ class UserController {
              console.log(e)
        }
     }
+
+    async getUserIcon(req, res) {
+        try {
+            const apiToken = req.header('Authorization').replace('Bearer ', '');
+            const user = await User.findOne({ apiToken });
+
+            if (!user) {
+                res.status(401).json({ error: "Invalid apiToken" });
+            }
+
+            const icon = user.icon;
+            console.log(icon);
+            res.status(200).json({ icon });
+        } catch(e) {
+            console.log(e)
+        }
+    }
+
+    async changeUserIcon(req, res) {
+        try {
+            const apiToken = req.header('Authorization').replace('Bearer ', '');
+            const user = await User.findOne({ apiToken });
+
+            if (!user) {
+                res.status(401).json({ error: "Invalid apiToken" });
+            }
+
+            console.log(req.body.iconLink);
+
+            user.icon = req.body.iconLink;
+            const result = await user.save();
+
+            if (result) {
+                res.status(200).json('Ikona zmieniona pomyślnie')
+            }
+        } catch(e) {
+            console.log(e);
+        }
+    }
 }
 
 module.exports = new UserController();
