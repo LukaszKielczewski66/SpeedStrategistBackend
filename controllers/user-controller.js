@@ -64,6 +64,7 @@ class UserController {
 
             res.status(200).json({
                 firstName: user.firstName,
+                email: user.email,
                 lastName: user.lastName,
                 icon: user.icon,
                 car: user.car,

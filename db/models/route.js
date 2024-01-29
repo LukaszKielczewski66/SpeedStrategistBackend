@@ -8,7 +8,10 @@ const routeSchema = new Schema({
     waypoints: String,
     destination: String,
     speed: String,
-    time: String
+    time: String,
+    timesTab: String,
+    distance: String,
+    averageSpeed: String
 })
 
 const Route = mongoose.model('Route', routeSchema);
