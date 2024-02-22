@@ -37,7 +37,7 @@ class DriverProfileController {
     async updateProperties(req, res) {
         try {
             const driverProfile = await DriverProfile.findOne({ userEmail: req.body.userEmail })
-
+            console.log(req.body)
             if (req.body.propsToUpdate === 'allRoutes') {
                 driverProfile.allRoutes++;
             }

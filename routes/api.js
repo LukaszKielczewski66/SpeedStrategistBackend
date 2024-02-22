@@ -5,6 +5,7 @@ const UserController = require('../controllers/user-controller');
 const IconController = require('../controllers/icon-controller');
 const RoutesController = require('../controllers/route-controller');
 const DriverProfileController = require('../controllers/driverProfile-controller');
+const ControlPointsController = require('../controllers/controlPoints-controller');
 
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
@@ -27,5 +28,8 @@ router.get('/driverProfile', DriverProfileController.getDriverProfile);
 router.post('/addDriverProfile', DriverProfileController.addDriverProfile);
 router.put('/updateProperties', DriverProfileController.updateProperties);
 router.put('/updateLastRide', DriverProfileController.updateLastRide);
+
+router.post('/addControlPoints', ControlPointsController.addControlPoints);
+router.post('/getControlPoints', ControlPointsController.getControlPoints);
 
 module.exports = router;

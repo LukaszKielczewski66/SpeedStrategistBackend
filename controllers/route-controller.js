@@ -58,6 +58,7 @@ class RouteController {
             const route = await Route.findOne({ title: req.body.title })
             
             route.timesTab = req.body.timesTab;
+            console.log('updated times tab: ', route.timesTab)
 
             await route.save();
             res.status(200).json({ message: 'Pole "timesTab" zostało zaaktualizowane', route });
